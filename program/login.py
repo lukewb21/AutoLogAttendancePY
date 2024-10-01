@@ -57,8 +57,3 @@ def retrieve_credentials():
         return username, password
     
     return get_credentials()
-
-def microsoft_login(page):
-    username, password = retrieve_credentials()
-    enter_credentials(page, username, password)
-    wait_for_verification(page)
