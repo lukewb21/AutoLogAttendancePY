@@ -1,0 +1,5 @@
+# Compiled files
+__pycache__
+
+# Local files
+credentials.txt
