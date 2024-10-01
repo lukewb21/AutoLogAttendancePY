@@ -1,3 +1,5 @@
+import os
+
 from playwright.sync_api import sync_playwright
 
 from login import wait_for_verification, enter_credentials, retrieve_credentials
@@ -22,6 +24,7 @@ def initialize_browser(playwright):
 
 def main():
     with sync_playwright() as playwright:
+        os.system("cls")
         context = initialize_browser(playwright)
         page = context.new_page()
 
