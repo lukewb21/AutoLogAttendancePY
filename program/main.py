@@ -23,8 +23,9 @@ def initialize_browser(playwright):
     return context
 
 def main():
+    os.system("cls")
+
     with sync_playwright() as playwright:
-        os.system("cls")
         context = initialize_browser(playwright)
         page = context.new_page()
 
