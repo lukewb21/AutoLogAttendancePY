@@ -2,13 +2,14 @@ import os
 
 from playwright.sync_api import sync_playwright
 
-from login import wait_for_verification, enter_credentials, retrieve_credentials
-from attend import check_attendance
+from login import retrieve_credentials, enter_credentials, wait_for_verification
+from attend import check_timeout, check_attendance
 
 def attend_lectures(page):
     lecture_total = 0
     first_run = True
     while True:
+        check_timeout(page)
         lecture_total += check_attendance(page, lecture_total, first_run)
         if first_run: first_run = False
 

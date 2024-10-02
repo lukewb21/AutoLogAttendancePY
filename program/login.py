@@ -1,31 +1,34 @@
 import os
 import time
 
+def resend_code(page):
+    time.sleep(10)
+    page.click("xpath=//*[@id=\"idA_SAASTO_Resend\"]")
+    page.wait_for_load_state()
+    os.system("cls")
+    print("Please verify your login with the following code: " + page.locator("xpath=//*[@id=\"idRichContext_DisplaySign\"]").inner_text())
+
 def wait_for_verification(page):
-    time.sleep(1)
     print("Please verify your login with the following code: " + page.locator("xpath=//*[@id=\"idRichContext_DisplaySign\"]").inner_text())
     while True:
         if page.locator("//*[@id=\"idA_SAASTO_Resend\"]").is_visible():
-            time.sleep(10)
-            page.click("xpath=//*[@id=\"idA_SAASTO_Resend\"]")
-            os.system("cls")
-            print("Please verify your login with the following code: " + page.locator("xpath=//*[@id=\"idRichContext_DisplaySign\"]").inner_text())
+            resend_code(page)
         elif page.locator("xpath=//*[@id=\"idBtn_Back\"]").is_visible():
             page.click("xpath=//*[@id=\"idBtn_Back\"]")
             break
         time.sleep(1)
+    page.wait_for_load_state()
     os.system("cls")
-    time.sleep(1)
 
 def enter_credentials(page, username, password):
     page.goto("https://generalssb-prod.ec.royalholloway.ac.uk/BannerExtensibility/customPage/page/RHUL_Attendance_Student")
-    time.sleep(1)
+    page.wait_for_load_state()
     page.fill("xpath=//*[@id=\"i0116\"]", username + "@live.rhul.ac.uk")
     page.click("xpath=//*[@id=\"idSIButton9\"]")
-    time.sleep(1)
+    page.wait_for_load_state()
     page.fill("xpath=//*[@id=\"i0118\"]", password)
     page.click("xpath=//*[@id=\"idSIButton9\"]")
-
+    page.wait_for_load_state()
     os.system("cls")
 
 def get_credentials():

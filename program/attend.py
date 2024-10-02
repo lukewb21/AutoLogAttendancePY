@@ -18,19 +18,24 @@ def get_current_minute(page):
 
 def check_attendance(page, lecture_total, first_run):
     attend_target_minutes = {"01", "31"}
-    refresh_target_minutes = {"59", "44", "29", "14"}
     current_minute = get_current_minute(page)
 
     clicked = 0
     if current_minute in attend_target_minutes or first_run:
+        if not first_run:
+            page.reload()
+            page.wait_for_load_state()
         clicked += click_buttons(page)
+
         os.system("cls")
         print("Signed in as " + page.locator("xpath=//*[@id=\"username\"]/span").inner_text())
         print("Lectures attended today: " + str(lecture_total + clicked))
-        time.sleep(60)
-    elif current_minute in refresh_target_minutes:
-        page.reload()
+
         time.sleep(60)
     time.sleep(1)
-
     return clicked
+
+def check_timeout(page):
+    if page.locator("xpath=//*[@id=\"pbid-btnTimeOut\"]").is_visible():
+        page.click("xpath=//*[@id=\"pbid-btnTimeOut\"]")
+        time.sleep(1)
