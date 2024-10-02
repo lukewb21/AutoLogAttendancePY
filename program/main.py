@@ -33,7 +33,7 @@ def main():
             microsoft_login(page)
             attend_lectures(page)
         except KeyboardInterrupt:
-            print("Exiting...")
+            os.system("cls")
 
 if __name__ == "__main__":
     main()

@@ -25,7 +25,8 @@ def check_attendance(page, lecture_total, first_run):
     if current_minute in attend_target_minutes or first_run:
         clicked += click_buttons(page)
         os.system("cls")
-        print("Signed in as " + page.locator("xpath=//*[@id=\"username\"]/span").inner_text() + "\nLectures attended today: " + str(lecture_total + clicked))
+        print("Signed in as " + page.locator("xpath=//*[@id=\"username\"]/span").inner_text())
+        print("Lectures attended today: " + str(lecture_total + clicked))
         time.sleep(60)
     elif current_minute in refresh_target_minutes:
         page.reload()
