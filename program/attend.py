@@ -33,4 +33,3 @@ def check_attendance(page, lecture_total, first_run):
     time.sleep(1)
 
     return clicked
-
