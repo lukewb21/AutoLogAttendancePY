@@ -10,6 +10,11 @@ def click_buttons(page):
     if page.locator("xpath=//*[@id=\"pbid-buttonFoundHappeningNowButtonsTwoHere\"]").is_visible():
         page.click("xpath=//*[@id=\"pbid-buttonFoundHappeningNowButtonsTwoHere\"]")
         clicked += 1
+
+    time.sleep(1)
+    if page.locator("xpath=//*[@id=\"notification-center\"]/div/ul[1]/li/div[2]/button").is_visible():
+        page.click("xpath=//*[@id=\"notification-center\"]/div/ul[1]/li/div[2]/button")
+
     return clicked
 
 def get_current_minute(page):
@@ -25,6 +30,7 @@ def check_attendance(page, lecture_total, first_run):
         if not first_run:
             page.reload()
             page.wait_for_load_state()
+        time.sleep(1)
         clicked += click_buttons(page)
 
         os.system("cls")
