@@ -14,6 +14,7 @@ def wait_for_verification(page):
         if page.locator("//*[@id=\"idA_SAASTO_Resend\"]").is_visible():
             resend_code(page)
         elif page.locator("xpath=//*[@id=\"idBtn_Back\"]").is_visible():
+            # Click "No" on the stay signed in prompt
             page.click("xpath=//*[@id=\"idBtn_Back\"]")
             break
         time.sleep(1)

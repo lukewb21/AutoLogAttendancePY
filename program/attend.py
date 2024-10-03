@@ -11,6 +11,7 @@ def click_buttons(page):
         page.click("xpath=//*[@id=\"pbid-buttonFoundHappeningNowButtonsTwoHere\"]")
         clicked += 1
 
+    # Dismiss attended notification
     time.sleep(1)
     if page.locator("xpath=//*[@id=\"notification-center\"]/div/ul[1]/li/div[2]/button").is_visible():
         page.click("xpath=//*[@id=\"notification-center\"]/div/ul[1]/li/div[2]/button")
@@ -42,6 +43,7 @@ def check_attendance(page, lecture_total, first_run):
     return clicked
 
 def check_timeout(page):
+    # Dismiss the timeout screen when it appears
     if page.locator("xpath=//*[@id=\"pbid-btnTimeOut\"]").is_visible():
         page.click("xpath=//*[@id=\"pbid-btnTimeOut\"]")
         time.sleep(1)
