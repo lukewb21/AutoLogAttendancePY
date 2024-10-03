@@ -1,6 +1,8 @@
 import os
 import time
 
+from button import click_button
+
 def resend_code(page):
     time.sleep(10)
     page.click("xpath=//*[@id=\"idA_SAASTO_Resend\"]")
@@ -8,20 +10,20 @@ def resend_code(page):
     os.system("cls")
     print("Please verify your login with the following code: " + page.locator("xpath=//*[@id=\"idRichContext_DisplaySign\"]").inner_text())
 
+# Wait for verification, resend code if necessary, say no to staying signed in if successful
 def wait_for_verification(page):
     print("Please verify your login with the following code: " + page.locator("xpath=//*[@id=\"idRichContext_DisplaySign\"]").inner_text())
     while True:
         if page.locator("//*[@id=\"idA_SAASTO_Resend\"]").is_visible():
             resend_code(page)
-        elif page.locator("xpath=//*[@id=\"idBtn_Back\"]").is_visible():
-            # Click "No" on the stay signed in prompt
-            page.click("xpath=//*[@id=\"idBtn_Back\"]")
+        elif click_button(page, "//*[@id=\"idBtn_Back\"]") == 1:
             break
-        time.sleep(1)
+        time.sleep(0.5)
     page.wait_for_load_state()
     os.system("cls")
 
 def enter_credentials(page, username, password):
+    print("Logging in...")
     page.goto("https://generalssb-prod.ec.royalholloway.ac.uk/BannerExtensibility/customPage/page/RHUL_Attendance_Student")
     page.wait_for_load_state()
     page.fill("xpath=//*[@id=\"i0116\"]", username + "@live.rhul.ac.uk")
