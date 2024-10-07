@@ -4,4 +4,4 @@ The following steps are required to run the program:
 - Install playwright using `pip install playwright`.
 - Setup playwright using `playwright install`.
 
-Executing the program is as simple as running `./script/run.bat -nowin` from the root of the project.
+Executing the program is as simple as running `./script/run.bat` from the root of the project.
