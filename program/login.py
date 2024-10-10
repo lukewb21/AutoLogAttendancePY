@@ -1,5 +1,7 @@
 import os
 import time
+import pickle
+import getpass
 
 from button import click_button
 
@@ -24,8 +26,6 @@ def wait_for_verification(page):
 
 def enter_credentials(page, username, password):
     print("Logging in...")
-    page.goto("https://generalssb-prod.ec.royalholloway.ac.uk/BannerExtensibility/customPage/page/RHUL_Attendance_Student")
-    page.wait_for_load_state()
     page.fill("xpath=//*[@id=\"i0116\"]", username + "@live.rhul.ac.uk")
     page.click("xpath=//*[@id=\"idSIButton9\"]")
     page.wait_for_load_state()
@@ -33,27 +33,26 @@ def enter_credentials(page, username, password):
     page.click("xpath=//*[@id=\"idSIButton9\"]")
     page.wait_for_load_state()
     os.system("cls")
+    page.locator("xpath=//*[@id=\"idRichContext_DisplaySign\"]").inner_text()
+    
 
 def get_credentials():
     username = input("Enter your username (xxxxyyy): ")
-    password = input("Enter your password: ")
+    password = getpass.getpass("Enter your password: ")
     save_credentials = input("Would you like to save your credentials for next time? (Y/n): ").lower()
     if save_credentials == "n":
         return username, password
 
-    credentials = open("credentials.txt", "w")
-    credentials.write(username + "\n" + password)
-    credentials.close()
+    pickle.dump([username, password], open('cred.bin', 'wb'))
     return username, password
 
 def check_existing_credentials():
-    if os.path.exists("credentials.txt"):
+    if os.path.exists("cred.bin"):
         use_credentials = input("Do you want to use saved credentials? (Y/n): ").lower()
         if use_credentials != "n":
-            credentials = open("credentials.txt", "r")
-            username = credentials.readline().strip()
-            password = credentials.readline().strip()
-            credentials.close()
+            credentials = pickle.load(open('cred.bin', 'rb'))
+            username = credentials[0]
+            password = credentials[1]
             return username, password
     return None, None
 
@@ -63,3 +62,7 @@ def retrieve_credentials():
         return username, password
     
     return get_credentials()
+
+def goto_login(page):
+    page.goto("https://generalssb-prod.ec.royalholloway.ac.uk/BannerExtensibility/customPage/page/RHUL_Attendance_Student")
+    page.wait_for_load_state()

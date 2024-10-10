@@ -1,8 +1,10 @@
 import os
 import time
 from datetime import datetime
+from rich import print
 
 from button import click_button
+from format import printmd
 
 # Click the attend buttons and dismiss the successful notification
 def click_attend(page):
@@ -15,35 +17,40 @@ def click_attend(page):
 
     return clicked
 
+def find_lectures(page, lecture_total):
+    clicked = 0
+    time.sleep(1)
+    os.system("cls")
+    print("Checking for lectures...")
+    clicked += click_attend(page)
+
+    if clicked == 1: print("1 Lecture found!")
+    elif clicked == 2: print("2 Lectures found!")
+    else: print("No lectures found.")
+    time.sleep(1)
+    os.system("cls")
+    print("AutoLogAttendance (Python Edition) v0.1.2")
+    print("Signed in as " + page.locator("xpath=//*[@id=\"username\"]/span").inner_text())
+    print("Lectures attended today: " + str(lecture_total + clicked))
+
+    time.sleep(60)
+    
+    return clicked
+
 def get_current_minute(page):
     current_datetime = datetime.strptime(page.locator("xpath=//*[@id=\"jsTime\"]").inner_text(), "%d/%m/%Y %H:%M:%S")
     return current_datetime.strftime("%M")
 
-def check_attendance(page, lecture_total, first_run):
-    attend_target_minutes = ["02", "32"]
+def check_attendance(page, lecture_total):
     refresh_target_minutes = ["01", "31"]
+    attend_target_minutes = ["02", "32"]
     current_minute = get_current_minute(page)
-
     clicked = 0
-    if current_minute in attend_target_minutes or first_run:
-        time.sleep(1)
-        os.system("cls")
-        print("Checking for lectures...")
-        clicked += click_attend(page)
-
-        if clicked == 1: print("1 Lecture found!")
-        elif clicked == 2: print("2 Lectures found!")
-        else: print("No lectures found.")
-        time.sleep(1)
-        os.system("cls")
-        print("Signed in as " + page.locator("xpath=//*[@id=\"username\"]/span").inner_text())
-        print("Lectures attended today: " + str(lecture_total + clicked))
-
-        time.sleep(60)
+    if current_minute in attend_target_minutes:
+        clicked = find_lectures(page, lecture_total)
     elif current_minute in refresh_target_minutes:
         page.reload()
         page.wait_for_load_state()
-
         time.sleep(60)
 
     time.sleep(0.5)

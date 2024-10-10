@@ -2,4 +2,4 @@
 __pycache__
 
 # Local files
-credentials.txt
+cred.bin
